@@ -7,3 +7,6 @@
 [submodule "bouncer_blakus"]
 	path = bouncer_blakus
 	url = https://github.com/dalbo/bouncer_blakus.git
+[submodule "lava_blakus"]
+	path = lava_blakus
+	url = https://github.com/dalbo/lava_blakus.git

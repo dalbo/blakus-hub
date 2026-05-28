@@ -63,6 +63,7 @@
     .card-blakus:hover   { border-color: #00d9a3; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(0,217,163,0.18); }
     .card-dash:hover     { border-color: #3cdcff; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(60,220,255,0.18); }
     .card-bouncer:hover  { border-color: #ffd166; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(255,209,102,0.18); }
+    .card-lava:hover     { border-color: #ff5500; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(255,85,0,0.25); }
 
     /* mini scene drawn by JS */
     .card-scene { display: block; width: 100%; height: 120px; }
@@ -84,6 +85,7 @@
     .card-blakus  .card-title { color: #00d9a3; }
     .card-dash    .card-title { color: #3cdcff; }
     .card-bouncer .card-title { color: #ffd166; }
+    .card-lava    .card-title { color: #ff5500; }
 
     .card-genre {
       font-size: 0.62rem;
@@ -118,6 +120,7 @@
     .card-blakus  .play-btn { background: rgba(0,217,163,0.12);  color: #00d9a3;  border: 1px solid rgba(0,217,163,0.35); }
     .card-dash    .play-btn { background: rgba(60,220,255,0.10); color: #3cdcff;  border: 1px solid rgba(60,220,255,0.3); }
     .card-bouncer .play-btn { background: rgba(255,209,102,0.10);color: #ffd166;  border: 1px solid rgba(255,209,102,0.3); }
+    .card-lava    .play-btn { background: rgba(255,85,0,0.12);   color: #ff5500;  border: 1px solid rgba(255,85,0,0.35); }
 
     footer {
       margin-top: 72px;
@@ -161,6 +164,16 @@
         <div class="card-title">Bouncer</div>
         <div class="card-genre">Endless Climber</div>
         <div class="card-desc">Auto-bounce up crumbling platforms. 1 or 2 players. Leaderboard included.</div>
+        <span class="play-btn">PLAY</span>
+      </div>
+    </a>
+
+    <a class="card card-lava" href="lava_blakus/index.html">
+      <canvas class="card-scene" id="scene-lava" width="250" height="120"></canvas>
+      <div class="card-body">
+        <div class="card-title">Lava Blakus</div>
+        <div class="card-genre">Survival Climber</div>
+        <div class="card-desc">Rising lava is chasing you up 5 levels. Outrun it or burn. Lava resets on death.</div>
         <span class="play-btn">PLAY</span>
       </div>
     </a>
@@ -339,6 +352,71 @@
       ctx.fillStyle = '#fff';
       ctx.font = 'bold 16px monospace';
       ctx.fillText('342', W - 10, 36);
+    })();
+
+    // ── Lava Blakus preview — vertical climb with rising lava ────────────
+    (function () {
+      const c = document.getElementById('scene-lava');
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+
+      ctx.fillStyle = '#160500';
+      ctx.fillRect(0, 0, W, H);
+
+      // platforms (zigzag left/right climbing up)
+      const plats = [
+        [10,  104, 60, 6, '#5a2510'],
+        [130, 84,  60, 6, '#5a2510'],
+        [30,  64,  60, 6, '#5a2510'],
+        [140, 44,  60, 6, '#5a2510'],
+        [40,  26,  60, 6, '#5a2510'],
+      ];
+      for (const [x, y, w, h, col] of plats) {
+        ctx.fillStyle = col;
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.fillRect(x, y, w, 2);
+      }
+
+      // player (red square, mid-climb)
+      ctx.fillStyle = '#c02030';
+      ctx.fillRect(156, 36, 12, 16);
+      ctx.fillStyle = '#e8c870';
+      ctx.fillRect(157, 36, 10, 5);
+      ctx.fillStyle = '#0d0d1a';
+      ctx.fillRect(163, 37, 3, 3);
+
+      // lava at bottom
+      const lavaY = 113;
+      const grad = ctx.createLinearGradient(0, lavaY - 16, 0, lavaY);
+      grad.addColorStop(0, 'rgba(255,80,0,0)');
+      grad.addColorStop(1, 'rgba(255,80,0,0.5)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, lavaY - 16, W, 16);
+
+      ctx.fillStyle = '#b81800';
+      ctx.beginPath();
+      ctx.moveTo(0, lavaY);
+      for (let x = 0; x <= W; x += 5) {
+        ctx.lineTo(x, lavaY + Math.sin(x / 18) * 4);
+      }
+      ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#ff5500';
+      ctx.beginPath();
+      ctx.moveTo(0, lavaY - 1);
+      for (let x = 0; x <= W; x += 5) {
+        ctx.lineTo(x, lavaY + Math.sin(x / 18) * 4 - 1);
+      }
+      for (let x = W; x >= 0; x -= 5) {
+        ctx.lineTo(x, lavaY + Math.sin(x / 18) * 4 + 7);
+      }
+      ctx.closePath(); ctx.fill();
+
+      // danger glow on player (lava below them)
+      ctx.fillStyle = 'rgba(255,60,0,0.15)';
+      ctx.fillRect(0, H * 0.6, W, H * 0.4);
     })();
   </script>
 
