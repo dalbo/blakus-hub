@@ -1,0 +1,9 @@
+[submodule "blakus"]
+	path = blakus
+	url = https://github.com/dalbo/blakus.git
+[submodule "blakus_dash"]
+	path = blakus_dash
+	url = https://github.com/dalbo/blakus_dash.git
+[submodule "bouncer_blakus"]
+	path = bouncer_blakus
+	url = https://github.com/dalbo/bouncer_blakus.git

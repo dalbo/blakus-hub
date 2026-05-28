@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blakus Games</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #09090f;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      color: #fff;
+      padding: 40px 24px;
+    }
+
+    .logo {
+      font-size: clamp(2.2rem, 8vw, 4rem);
+      letter-spacing: 0.45em;
+      color: #00d9a3;
+      text-shadow: 0 0 40px rgba(0,217,163,0.35);
+      margin-bottom: 6px;
+    }
+
+    .tagline {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      color: #2e2e4e;
+      text-transform: uppercase;
+      margin-bottom: 72px;
+    }
+
+    .grid {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 250px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .card:hover { transform: translateY(-6px); }
+
+    .card-blakus:hover   { border-color: #00d9a3; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(0,217,163,0.18); }
+    .card-dash:hover     { border-color: #3cdcff; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(60,220,255,0.18); }
+    .card-bouncer:hover  { border-color: #ffd166; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(255,209,102,0.18); }
+
+    /* mini scene drawn by JS */
+    .card-scene { display: block; width: 100%; height: 120px; }
+
+    .card-body {
+      padding: 22px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card-blakus  .card-title { color: #00d9a3; }
+    .card-dash    .card-title { color: #3cdcff; }
+    .card-bouncer .card-title { color: #ffd166; }
+
+    .card-genre {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      color: #3a3a5a;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .card-desc {
+      font-size: 0.77rem;
+      color: #6060808;
+      color: #606080;
+      line-height: 1.75;
+      flex-grow: 1;
+      margin-bottom: 22px;
+    }
+
+    .play-btn {
+      display: block;
+      text-align: center;
+      padding: 10px 0;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      font-weight: bold;
+      transition: opacity 0.15s;
+    }
+    .card:hover .play-btn { opacity: 0.85; }
+
+    .card-blakus  .play-btn { background: rgba(0,217,163,0.12);  color: #00d9a3;  border: 1px solid rgba(0,217,163,0.35); }
+    .card-dash    .play-btn { background: rgba(60,220,255,0.10); color: #3cdcff;  border: 1px solid rgba(60,220,255,0.3); }
+    .card-bouncer .play-btn { background: rgba(255,209,102,0.10);color: #ffd166;  border: 1px solid rgba(255,209,102,0.3); }
+
+    footer {
+      margin-top: 72px;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      color: #1e1e30;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="logo">BLAKUS</h1>
+  <p class="tagline">select a game</p>
+
+  <div class="grid">
+
+    <a class="card card-blakus" href="blakus/index.html">
+      <canvas class="card-scene" id="scene-blakus" width="250" height="120"></canvas>
+      <div class="card-body">
+        <div class="card-title">Blakus</div>
+        <div class="card-genre">Platformer</div>
+        <div class="card-desc">5 levels of spiked platforms and moving hazards. Reach the door. Earn the crown.</div>
+        <span class="play-btn">PLAY</span>
+      </div>
+    </a>
+
+    <a class="card card-dash" href="blakus_dash/index.html">
+      <canvas class="card-scene" id="scene-dash" width="250" height="120"></canvas>
+      <div class="card-body">
+        <div class="card-title">Blakus Dash</div>
+        <div class="card-genre">Rhythm Runner</div>
+        <div class="card-desc">Jump to the beat through 3 levels of escalating spike patterns.</div>
+        <span class="play-btn">PLAY</span>
+      </div>
+    </a>
+
+    <a class="card card-bouncer" href="bouncer_blakus/index.html">
+      <canvas class="card-scene" id="scene-bouncer" width="250" height="120"></canvas>
+      <div class="card-body">
+        <div class="card-title">Bouncer</div>
+        <div class="card-genre">Endless Climber</div>
+        <div class="card-desc">Auto-bounce up crumbling platforms. 1 or 2 players. Leaderboard included.</div>
+        <span class="play-btn">PLAY</span>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>Blakus Games &nbsp;&middot;&nbsp; made with canvas</footer>
+
+  <script>
+    // ── Blakus preview — dark platformer scene ──────────────────────────
+    (function () {
+      const c = document.getElementById('scene-blakus');
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, W, H);
+
+      // subtle dot grid
+      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      [[30,20],[90,15],[170,25],[220,18],[55,70],[140,65],[200,75],[35,95],[110,90],[185,100]].forEach(([x,y]) => {
+        ctx.fillRect(x, y, 2, 2);
+      });
+
+      // platforms
+      const plats = [
+        [0,   96, 60, 8, '#2d2d4c'],
+        [190, 96, 60, 8, '#2d2d4c'],
+        [70,  80, 28, 5, '#4a3a6a'],
+        [112, 64, 24, 5, '#5a4a7a'],
+        [152, 74, 28, 5, '#4a3a6a'],
+      ];
+      for (const [x, y, w, h, col] of plats) {
+        ctx.fillStyle = col;
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.fillRect(x, y, w, 2);
+      }
+
+      // spike on second platform
+      ctx.fillStyle = '#cc2244';
+      ctx.beginPath();
+      ctx.moveTo(118, 64); ctx.lineTo(124, 52); ctx.lineTo(130, 64);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#ff4466';
+      ctx.beginPath();
+      ctx.moveTo(120, 64); ctx.lineTo(124, 56); ctx.lineTo(128, 64);
+      ctx.closePath(); ctx.fill();
+
+      // player (teal square)
+      ctx.fillStyle = '#00d9a3';
+      ctx.fillRect(20, 70, 10, 14);
+      ctx.fillStyle = '#0a0a1a';
+      ctx.fillRect(26, 72, 3, 3); // eye
+
+      // door (gold)
+      ctx.fillStyle = '#5a5a00';
+      ctx.fillRect(204, 74, 10, 22);
+      ctx.fillStyle = '#ffd700';
+      ctx.fillRect(205, 75, 8, 20);
+      ctx.fillStyle = '#ffaa00';
+      ctx.fillRect(210, 84, 2, 3); // handle
+    })();
+
+    // ── Blakus Dash preview — rhythm runner scene ───────────────────────
+    (function () {
+      const c = document.getElementById('scene-dash');
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#1a0e2a'); g.addColorStop(1, '#0a0614');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+      // grid lines
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+      // ground
+      ctx.strokeStyle = '#ff3cac';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = '#ff3cac'; ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.moveTo(0, H - 20); ctx.lineTo(W, H - 20); ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // ground fill
+      const gf = ctx.createLinearGradient(0, H - 20, 0, H);
+      gf.addColorStop(0, '#2b1d3a'); gf.addColorStop(1, '#0c0612');
+      ctx.fillStyle = gf; ctx.fillRect(0, H - 20, W, 20);
+
+      // obstacles
+      const spikes = [60, 110, 150, 195];
+      for (const sx of spikes) {
+        ctx.fillStyle = '#ffe14a';
+        ctx.shadowColor = '#ffe14a'; ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.moveTo(sx, H - 20);
+        ctx.lineTo(sx + 10, H - 42);
+        ctx.lineTo(sx + 20, H - 20);
+        ctx.closePath(); ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // player cube (mid-jump)
+      ctx.shadowColor = '#3cdcff'; ctx.shadowBlur = 16;
+      ctx.fillStyle = '#3cdcff';
+      ctx.fillRect(24, H - 58, 18, 18);
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1;
+      ctx.strokeRect(25, H - 57, 16, 16);
+      ctx.fillStyle = '#0c2c3a';
+      ctx.fillRect(29, H - 53, 3, 3);
+      ctx.fillRect(36, H - 53, 3, 3);
+    })();
+
+    // ── Bouncer preview — endless climber scene ─────────────────────────
+    (function () {
+      const c = document.getElementById('scene-bouncer');
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#2b1a5c'); g.addColorStop(1, '#0e0524');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+      // platforms (different durabilities)
+      const plats = [
+        [W/2-35, 95, 70, 10, '#c97a3b', '#8a4a1a'],  // solid (orange)
+        [W/2-55, 72, 50, 10, '#06d6a0', '#048b6a'],  // 3-hit (green)
+        [W/2+10, 52, 50, 10, '#ffb347', '#a86200'],  // 2-hit (yellow)
+        [W/2-40, 30, 42, 10, '#e63946', '#931524'],  // 1-hit (red)
+        [W/2+20, 10, 38, 10, '#e63946', '#931524'],  // 1-hit (red)
+      ];
+      for (const [x, y, w, h, face, edge] of plats) {
+        ctx.fillStyle = face;
+        ctx.fillRect(x, y, w, h);
+        ctx.fillStyle = edge;
+        ctx.fillRect(x, y + h - 3, w, 3);
+      }
+
+      // player (P1, red hat)
+      const drawPlayer = (px, py) => {
+        const sprite = [
+          '....RRRRRR',
+          '...RRRRRRRR',
+          '...HHHSSS..',
+          '..SSSSSS...',
+          '..SSSSSS...',
+          '...SSSSSS..',
+          '..BBBBBBB..',
+          'BBBBBBBBBBB',
+          'BBBBBBBBBBB',
+          '.BBBB.BBBB.',
+          '.NNN...NNN.',
+        ];
+        const cols = { R: '#e63946', S: '#ffd1a3', H: '#3a2110', B: '#2b6cb0', N: '#5a3a1a' };
+        const s = 2;
+        for (let r = 0; r < sprite.length; r++) {
+          for (let ci = 0; ci < sprite[r].length; ci++) {
+            const ch = sprite[r][ci];
+            if (ch === '.' || !cols[ch]) continue;
+            ctx.fillStyle = cols[ch];
+            ctx.fillRect(px + ci * s, py + r * s, s, s);
+          }
+        }
+      };
+      drawPlayer(W/2 - 10, 62);
+
+      // score in top right
+      ctx.fillStyle = '#ffd166';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText('SCORE', W - 10, 18);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 16px monospace';
+      ctx.fillText('342', W - 10, 36);
+    })();
+  </script>
+
+</body>
+</html>
