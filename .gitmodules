@@ -10,3 +10,9 @@
 [submodule "lava_blakus"]
 	path = lava_blakus
 	url = https://github.com/dalbo/lava_blakus.git
+[submodule "blakus_td"]
+	path = blakus_td
+	url = https://github.com/dalbo/blakus_td.git
+[submodule "blakus_world"]
+	path = blakus_world
+	url = https://github.com/dalbo/blakus_world.git

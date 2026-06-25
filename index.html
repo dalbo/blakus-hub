@@ -64,6 +64,8 @@
     .card-dash:hover     { border-color: #3cdcff; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(60,220,255,0.18); }
     .card-bouncer:hover  { border-color: #ffd166; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(255,209,102,0.18); }
     .card-lava:hover     { border-color: #ff5500; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(255,85,0,0.25); }
+    .card-world:hover    { border-color: #cc44ff; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(204,68,255,0.25); }
+    .card-btd:hover      { border-color: #ff3860; box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 28px rgba(255,56,96,0.25); }
 
     /* mini scene drawn by JS */
     .card-scene { display: block; width: 100%; height: 120px; }
@@ -86,6 +88,8 @@
     .card-dash    .card-title { color: #3cdcff; }
     .card-bouncer .card-title { color: #ffd166; }
     .card-lava    .card-title { color: #ff5500; }
+    .card-world   .card-title { color: #cc44ff; }
+    .card-btd     .card-title { color: #ff3860; }
 
     .card-genre {
       font-size: 0.62rem;
@@ -121,6 +125,8 @@
     .card-dash    .play-btn { background: rgba(60,220,255,0.10); color: #3cdcff;  border: 1px solid rgba(60,220,255,0.3); }
     .card-bouncer .play-btn { background: rgba(255,209,102,0.10);color: #ffd166;  border: 1px solid rgba(255,209,102,0.3); }
     .card-lava    .play-btn { background: rgba(255,85,0,0.12);   color: #ff5500;  border: 1px solid rgba(255,85,0,0.35); }
+    .card-world   .play-btn { background: rgba(204,68,255,0.12); color: #cc44ff;  border: 1px solid rgba(204,68,255,0.35); }
+    .card-btd     .play-btn { background: rgba(255,56,96,0.12);  color: #ff3860;  border: 1px solid rgba(255,56,96,0.35); }
 
     footer {
       margin-top: 72px;
@@ -168,12 +174,32 @@
       </div>
     </a>
 
+    <a class="card card-world" href="blakus_world/index.html">
+      <canvas class="card-scene" id="scene-world" width="250" height="120"></canvas>
+      <div class="card-body">
+        <div class="card-title">Blakus World</div>
+        <div class="card-genre">Mario Platformer</div>
+        <div class="card-desc">3 worlds of enemies, power-ups, ? blocks, and flagpoles. Collect coins. Stomp foes.</div>
+        <span class="play-btn">PLAY</span>
+      </div>
+    </a>
+
     <a class="card card-lava" href="lava_blakus/index.html">
       <canvas class="card-scene" id="scene-lava" width="250" height="120"></canvas>
       <div class="card-body">
         <div class="card-title">Lava Blakus</div>
         <div class="card-genre">Survival Climber</div>
         <div class="card-desc">Rising lava is chasing you up 5 levels. Outrun it or burn. Lava resets on death.</div>
+        <span class="play-btn">PLAY</span>
+      </div>
+    </a>
+
+    <a class="card card-btd" href="blakus_td/index.html">
+      <canvas class="card-scene" id="scene-btd" width="250" height="120"></canvas>
+      <div class="card-body">
+        <div class="card-title">BTD</div>
+        <div class="card-genre">Tower Defense</div>
+        <div class="card-desc">Build turrets along a winding path. Stop 12 waves of foes before they reach the crown.</div>
         <span class="play-btn">PLAY</span>
       </div>
     </a>
@@ -236,6 +262,66 @@
       ctx.fillRect(205, 75, 8, 20);
       ctx.fillStyle = '#ffaa00';
       ctx.fillRect(210, 84, 2, 3); // handle
+    })();
+
+    // ── Blakus World preview — mario-style platformer ──────────────────────
+    (function () {
+      const c = document.getElementById('scene-world');
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#040010'); g.addColorStop(1, '#0a0020');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+      // Stars
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      [[20,15],[60,25],[110,10],[155,30],[200,18],[235,28]].forEach(([x,y]) => ctx.fillRect(x,y,2,2));
+
+      // Ground
+      ctx.fillStyle = '#3a2010'; ctx.fillRect(0, 88, W, 32);
+      ctx.fillStyle = '#2a6a1a'; ctx.fillRect(0, 88, W, 8);
+      ctx.fillStyle = '#3a8a2a'; ctx.fillRect(0, 88, W, 3);
+
+      // Pipe
+      ctx.fillStyle = '#0a5a0a'; ctx.fillRect(178, 56, 28, 32);
+      ctx.fillStyle = '#0d6e0d'; ctx.fillRect(175, 56, 32, 12);
+
+      // ? blocks
+      const drawQ = (x, y, used) => {
+        ctx.fillStyle = used ? '#555568' : '#c87800';
+        ctx.fillRect(x, y, 16, 16);
+        if (!used) {
+          ctx.fillStyle = 'rgba(255,220,80,0.2)'; ctx.fillRect(x+2, y+2, 12, 12);
+          ctx.fillStyle = '#fff8e0';
+          ctx.font = 'bold 10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText('?', x+8, y+9);
+        }
+      };
+      drawQ(60, 56, false); drawQ(80, 56, true); drawQ(100, 56, false);
+
+      // Coin
+      ctx.fillStyle = '#ffd700';
+      ctx.beginPath(); ctx.ellipse(140, 66, 5, 6, 0, 0, Math.PI*2); ctx.fill();
+
+      // Enemy (goomba-like)
+      ctx.fillStyle = '#7a1818'; ctx.fillRect(128, 72, 18, 16);
+      ctx.fillStyle = '#9a2222'; ctx.fillRect(126, 68, 22, 8);
+      ctx.fillStyle = '#f0e0c0'; ctx.fillRect(130, 74, 4, 4); ctx.fillRect(138, 74, 4, 4);
+      ctx.fillStyle = '#1a0808'; ctx.fillRect(131, 75, 2, 2); ctx.fillRect(139, 75, 2, 2);
+
+      // Player (purple Mario-style)
+      const px = 28, py = 62;
+      ctx.fillStyle = '#cc44ff'; ctx.fillRect(px+1, py, 14, 7);   // hat
+      ctx.fillStyle = '#f0d090'; ctx.fillRect(px+2, py+7, 12, 8);  // face
+      ctx.fillStyle = '#8822cc'; ctx.fillRect(px+1, py+15, 14, 11); // body
+      ctx.fillStyle = '#1a0a2a'; ctx.fillRect(px+7, py+9, 4, 3);   // eye
+      ctx.fillStyle = '#551188'; ctx.fillRect(px+1, py+26, 6, 6); ctx.fillRect(px+9, py+24, 6, 8); // legs
+      ctx.fillStyle = '#1a0a2a'; ctx.fillRect(px, py+30, 8, 3); ctx.fillRect(px+8, py+30, 8, 3);
+
+      // Score popup
+      ctx.fillStyle = 'rgba(255,210,30,0.85)'; ctx.font = 'bold 10px monospace';
+      ctx.textAlign = 'left'; ctx.fillText('+200', 123, 62);
     })();
 
     // ── Blakus Dash preview — rhythm runner scene ───────────────────────
@@ -417,6 +503,64 @@
       // danger glow on player (lava below them)
       ctx.fillStyle = 'rgba(255,60,0,0.15)';
       ctx.fillRect(0, H * 0.6, W, H * 0.4);
+    })();
+
+    // ── BTD preview — tower defense scene ───────────────────────────────
+    (function () {
+      const c = document.getElementById('scene-btd');
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, '#1a0710'); g.addColorStop(1, '#0a0006');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+      // faint grid
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 25) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+      for (let y = 0; y < H; y += 25) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+      // winding path (ribbon + dashed guide)
+      const path = [[0,30],[180,30],[180,75],[70,75],[70,100],[215,100]];
+      const stroke = (col, w, dash) => {
+        ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+        ctx.setLineDash(dash || []);
+        ctx.beginPath(); ctx.moveTo(path[0][0], path[0][1]);
+        for (let i = 1; i < path.length; i++) ctx.lineTo(path[i][0], path[i][1]);
+        ctx.stroke(); ctx.setLineDash([]);
+      };
+      stroke('#2a1420', 18);
+      stroke('rgba(255,56,96,0.30)', 2, [5, 8]);
+
+      // crown at path end
+      ctx.fillStyle = '#ffd700';
+      ctx.beginPath();
+      ctx.moveTo(206,108); ctx.lineTo(206,98); ctx.lineTo(212,103);
+      ctx.lineTo(217,94); ctx.lineTo(222,103); ctx.lineTo(228,98);
+      ctx.lineTo(228,108); ctx.closePath(); ctx.fill();
+
+      // towers beside the path
+      const tower = (x, y, col) => {
+        ctx.fillStyle = col; ctx.fillRect(x-9, y-9, 18, 18);
+        ctx.fillStyle = '#0a0006'; ctx.fillRect(x-3, y-3, 6, 6);
+        ctx.fillStyle = col; ctx.fillRect(x, y-2, 12, 4); // barrel
+      };
+      tower(110, 55, '#4d8cff');   // blaster
+      tower(150, 95, '#ff8c42');   // cannon
+      tower(40, 55, '#3cdcff');    // frost
+
+      // enemies marching along the path
+      const foe = (x, y, col) => {
+        ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#0a0006'; ctx.fillRect(x-3, y-2, 2, 3); ctx.fillRect(x+1, y-2, 2, 3);
+      };
+      foe(95, 30, '#ff6b6b');
+      foe(140, 30, '#ffd166');
+      foe(180, 52, '#9b5de5');
+
+      // a shot in flight
+      ctx.fillStyle = '#bcd8ff';
+      ctx.beginPath(); ctx.arc(120, 42, 2.5, 0, Math.PI*2); ctx.fill();
     })();
   </script>
 
